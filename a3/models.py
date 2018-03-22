@@ -14,7 +14,11 @@ class MyGRUCell(nn.Module):
 
         self.input_size = input_size
         self.hidden_size = hidden_size
-
+        self.total_size = input_size + hidden_size
+        self.weight_r = nn.Linear(self.total_size, self.hidden_size)
+        self.weight_z = nn.Linear(self.total_size, self.hidden_size)
+        self.weight_gi = nn.Linear(self.input_size, self.hidden_size, bias=False)
+        self.weight_gh = nn.Linear(self.hidden_size, self.hidden_size)
         # ------------
         # FILL THIS IN
         # ------------
@@ -29,7 +33,12 @@ class MyGRUCell(nn.Module):
         Returns:
             h_new: batch_size x hidden_size
         """
-
+        new_input = torch.cat((x, h_prev),1)
+        
+        z = F.sigmoid(self.weight_z(new_input))
+        r = F.sigmoid(self.weight_r(new_input))
+        g = F.tanh(self.weight_gi(x) + r * self.weight_gh(h_prev))
+        h_new = (1 - z) * g + z * h_prev
         # ------------
         # FILL THIS IN
         # ------------
