@@ -112,6 +112,10 @@ class Attention(nn.Module):
         # hidden_size*2 --> hidden_size, ReLU, hidden_size --> 1
 
         # self.attention_network = ...
+        self.attention_network = nn.Sequential(
+                nn.Linear(hidden_size * 2, hidden_size),
+                nn.ReLU(),
+                nn.Linear(hidden_size, 1))
 
         self.softmax = nn.Softmax(dim=1)
 
@@ -130,6 +134,10 @@ class Attention(nn.Module):
 
         batch_size, seq_len, hid_size = annotations.size()
         expanded_hidden = hidden.unsqueeze(1).expand_as(annotations)
+        concat = torch.cat((expanded_hidden, annotations), 2)
+        reshaped_for_attention_net = concat.view(-1,self.hidden_size * 2)
+        attention_net_output = self.attention_network(reshaped_for_attention_net)
+        unnormalized_attention = attention_net_output.view(batch_size, seq_len,1)
 
         # ------------
         # FILL THIS IN
@@ -175,6 +183,11 @@ class AttentionDecoder(nn.Module):
         embed = self.embedding(x)    # batch_size x 1 x hidden_size
         embed = embed.squeeze(1)     # batch_size x hidden_size
 
+        attention_weights = self.attention.forward(h_prev, annotations)
+        context = torch.sum((attention_weights * annotations), dim=1)
+        embed_and_context = torch.cat((embed,context), dim=1)
+        h_new = self.rnn.forward(embed_and_context, h_prev)
+        output = self.out(h_new)
         # ------------
         # FILL THIS IN
         # ------------

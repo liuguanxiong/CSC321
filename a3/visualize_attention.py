@@ -18,6 +18,22 @@ import utils
 
 
 words = ['roomba',
+        'concert',
+         'hello',
+         'table',
+         'translate',
+         'possibility',
+         'interactive',
+         'information',
+         'we',
+         'you',
+         'hi',
+         'ie',
+         'i',
+         'g',
+         'ca',
+         'zh',
+         'bow'
          # Add your own words here!
         ]
 
