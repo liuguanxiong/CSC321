@@ -17,23 +17,21 @@ import torch
 import utils
 
 
-words = ['roomba',
-        'concert',
-         'hello',
-         'table',
-         'translate',
-         'possibility',
-         'interactive',
-         'information',
-         'we',
-         'you',
-         'hi',
-         'ie',
-         'i',
-         'g',
-         'ca',
-         'zh',
-         'bow'
+words = ['cake',
+         'make',
+         'even',
+         'drink',
+         'cycle',
+         'thesis',
+         'aardvark',
+         'oak',
+         'well-known',
+         'well-mannered',
+         'opt-out',
+         'a',
+         'd',
+         'oooo',
+         'asuperlongwordistested'
          # Add your own words here!
         ]
 
