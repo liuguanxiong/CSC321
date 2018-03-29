@@ -159,19 +159,19 @@ def training_loop(train_dataloader, opts):
 
             # FILL THIS IN
             # 1. Compute the discriminator loss on real images
-            # D_real_loss = ...
+            D_real_loss = (1/2)*np.mean(np.square(D.forward(real_images) - 1))
 
             # 2. Sample noise
-            # noise = ...
+            noise = sample_noise(opts.noise_size)
 
             # 3. Generate fake images from the noise
-            # fake_images = ...
+            fake_images = G.forward(noise)
 
             # 4. Compute the discriminator loss on the fake images
-            # D_fake_loss = ...
+            D_fake_loss = (1/2)*np.mean(np.square(D.forward(fake_images)))
 
             # 5. Compute the total discriminator loss
-            # D_total_loss = ...
+            D_total_loss = D_real_loss + D_fake_loss
 
             D_total_loss.backward()
             d_optimizer.step()
@@ -184,13 +184,13 @@ def training_loop(train_dataloader, opts):
 
             # FILL THIS IN
             # 1. Sample noise
-            # noise = ...
+            noise = sample_noise(opts.noise_size)
 
             # 2. Generate fake images from the noise
-            # fake_images = ...
+            fake_images = G.forward(noise)
 
             # 3. Compute the generator loss
-            # G_loss = ...
+            G_loss = np.mean(np.square(D.forward(fake_images) - 1))
 
             G_loss.backward()
             g_optimizer.step()
